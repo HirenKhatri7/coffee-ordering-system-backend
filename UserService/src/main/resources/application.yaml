@@ -27,3 +27,6 @@ eureka:
     fetch-registry: true
   instance:
     preferIpAddress: true
+
+jwt:
+  SECRET: ${JWT_SECRET}

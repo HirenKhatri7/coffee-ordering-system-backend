@@ -2,7 +2,6 @@ package com.example.OrderService.Service;
 
 import com.example.OrderService.External.CoffeeClient;
 import com.example.OrderService.External.CoffeeDTO;
-import com.example.OrderService.External.OrderProducer;
 import com.example.OrderService.Entity.Order;
 import com.example.OrderService.External.PaymentClient;
 import com.example.OrderService.Repository.OrderRepository;
@@ -18,7 +17,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderService {
     private final OrderRepository orderRepository;
-    private final OrderProducer orderProducer;
     private final CoffeeClient coffeeClient;
     private final PaymentClient paymentClient;
 

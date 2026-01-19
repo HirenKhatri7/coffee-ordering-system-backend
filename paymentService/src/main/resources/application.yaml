@@ -29,5 +29,5 @@ eureka:
     preferIpAddress: true
 
 razorpay:
-  key: YOUR_KEY
-  secret: YOUR_SECRET
+  key: ${RAZORPAY_KEYID}
+  secret: ${RAZORPAY_SECRET}
