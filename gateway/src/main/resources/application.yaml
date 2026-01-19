@@ -1,0 +1,46 @@
+server:
+  port: 8080
+logging:
+  level:
+    org.springframework.cloud.gateway: TRACE
+    org.springframework.web.reactive.DispatcherHandler: DEBUG
+    reactor.netty: DEBUG
+spring:
+  application:
+    name: ApiGateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      # Standard Spring Boot 3 Structure (No 'server.webflux')
+      routes:
+        # Route 1: Auth & User Service
+        - id: user-service
+          uri: lb://USERSERVICE
+          predicates:
+            - Path=/users/**, /auth/**
+
+        # Route 2: Coffee Service
+        - id: coffee-service
+          uri: lb://COFFEESERVICE
+          predicates:
+            - Path=/coffee/**
+
+        # Route 3: Order Service
+        - id: order-service
+          uri: lb://ORDERSERVICE
+          predicates:
+            - Path=/orders/**
+
+        - id: payment-service
+          uri: lb://PAYMENTSERVICE
+          predicates:
+            - Path=/payments/**
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    preferIpAddress: true
