@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +27,8 @@ public class AuthService {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setCreatedAt(new Date(System.currentTimeMillis()));
         userRepository.save(user);
-        return jwtService.generateToken(user);
+        Map<String, Object> claims = Map.of("userId",user.getId());
+        return jwtService.generateToken(user,claims);
     }
 
 

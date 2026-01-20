@@ -1,4 +1,5 @@
 package com.example.CoffeeService.Controller;
+import com.example.CoffeeService.DTO.CoffeeDTO;
 import com.example.CoffeeService.Entity.Coffee;
 import com.example.CoffeeService.Service.CoffeeService;
 import org.springframework.web.bind.annotation.*;
@@ -21,11 +22,11 @@ public class CoffeeController {
 
     @GetMapping("/{id}")
     public Coffee getById(@PathVariable Long id){
-        return coffeeService.getCoffeeById(id).orElseThrow();
+        return coffeeService.getCoffeeById(id);
     }
 
     @PostMapping("/")
-    public Coffee addCoffee(@RequestBody Coffee coffee){
+    public Coffee addCoffee(@RequestBody CoffeeDTO coffee){
         return coffeeService.saveCoffee(coffee);
     }
 

@@ -2,6 +2,7 @@ package com.example.paymentService.service;
 
 import com.example.paymentService.DTO.PaymentSuccessEvent;
 import com.example.paymentService.entity.Payment;
+import com.example.paymentService.exception.ResourceNotFoundException;
 import com.example.paymentService.repository.PaymentRepository;
 import com.razorpay.Order;
 import com.razorpay.RazorpayClient;
@@ -53,7 +54,7 @@ public class PaymentService {
                     .put("razorpay_signature", signature), apiSecret);
 
             // 3. If we reach here, verification was successful
-            Payment payment = paymentRepository.findByRazorpayOrderId(orderId).orElseThrow();
+            Payment payment = paymentRepository.findByRazorpayOrderId(orderId).orElseThrow(() -> new ResourceNotFoundException("Payment not found"));
             payment.setRazorpayPaymentId(paymentId);
             payment.setStatus("SUCCESS");
             paymentRepository.save(payment);

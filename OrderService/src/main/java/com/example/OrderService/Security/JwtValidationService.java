@@ -24,6 +24,17 @@ public class JwtValidationService {
         Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
+    public Long extractUserId(String token){
+        return extractClaim(token,claims -> {
+            Object userId = claims.get("userId");
+            if (userId instanceof Integer) {
+                return ((Integer) userId).longValue();
+            } else if (userId instanceof Long) {
+                return (Long) userId;
+            }
+            return null;
+        });
+    }
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);

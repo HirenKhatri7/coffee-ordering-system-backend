@@ -6,10 +6,12 @@ import com.example.OrderService.Entity.Order;
 import com.example.OrderService.External.PaymentClient;
 import com.example.OrderService.Repository.OrderRepository;
 import com.example.OrderService.Entity.OrderRequestEvent;
+import com.example.OrderService.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.ReadOnlyFileSystemException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -40,7 +42,7 @@ public class OrderService {
     }
 
     public Order getOrderById(Long id){
-        return orderRepository.findById(id).orElseThrow();
+        return orderRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Order not found with ID: " + id));
     }
 
     public List<Order> getOrderByUserId(Long userId){

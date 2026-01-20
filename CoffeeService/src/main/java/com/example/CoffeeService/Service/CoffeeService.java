@@ -1,7 +1,9 @@
 package com.example.CoffeeService.Service;
 
+import com.example.CoffeeService.DTO.CoffeeDTO;
 import com.example.CoffeeService.Entity.Coffee;
 import com.example.CoffeeService.Repository.CoffeeRepository;
+import com.example.CoffeeService.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,12 +18,15 @@ public class CoffeeService {
         this.coffeeRepository = coffeeRepository;
     }
 
-    public Coffee saveCoffee(Coffee coffee){
-        return coffeeRepository.save(coffee);
+    public Coffee saveCoffee(CoffeeDTO coffee){
+        Coffee c = new Coffee();
+        c.setName(coffee.getName());
+        c.setPrice(coffee.getPrice());
+        return coffeeRepository.save(c);
     }
 
-    public Optional<Coffee> getCoffeeById(Long id){
-        return coffeeRepository.findById(id);
+    public Coffee getCoffeeById(Long id){
+        return coffeeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Coffee not found with id: " + id));
     }
 
     public List<Coffee> getAllCoffee(){

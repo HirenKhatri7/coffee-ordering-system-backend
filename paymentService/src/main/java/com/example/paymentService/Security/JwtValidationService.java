@@ -5,6 +5,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
@@ -16,7 +17,8 @@ import java.util.function.Function;
 @Service
 public class JwtValidationService {
 
-    private String secret = "YOUR_SECRET";
+    @Value("${jwt.SECRET}")
+    private String secret;
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver){
         Claims claims = extractAllClaims(token);
@@ -37,6 +39,17 @@ public class JwtValidationService {
 
     private boolean isTokenExpired(String token) {
         return extractClaim(token, Claims::getExpiration).before(new Date());
+    }
+    public Long extractUserId(String token){
+        return extractClaim(token,claims -> {
+            Object userId = claims.get("userId");
+            if (userId instanceof Integer) {
+                return ((Integer) userId).longValue();
+            } else if (userId instanceof Long) {
+                return (Long) userId;
+            }
+            return null;
+        });
     }
 
     private Claims extractAllClaims(String token){

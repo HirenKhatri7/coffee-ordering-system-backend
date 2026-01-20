@@ -3,6 +3,7 @@ package com.example.UserService.Service;
 import com.example.UserService.Entity.User;
 import com.example.UserService.DTO.UserDTO;
 import com.example.UserService.Repository.UserRepository;
+import com.example.UserService.exception.ResourceNotFoundException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,7 +24,7 @@ public class UserService implements UserDetailsService {
     }
 
     public User getUserById(Long id){
-        return userRepository.findById(id).orElseThrow();
+        return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
     }
 
     public List<User> getAllUser(){
@@ -45,11 +46,11 @@ public class UserService implements UserDetailsService {
 
 
     public User getUserByEmail(String email){
-        return userRepository.findByEmail(email).orElseThrow();
+        return userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + email));
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByEmail(username).orElseThrow(()-> new UsernameNotFoundException("User Not Found"));
+        return userRepository.findByEmail(username).orElseThrow(()-> new ResourceNotFoundException("User not found with email: " + username));
     }
 }

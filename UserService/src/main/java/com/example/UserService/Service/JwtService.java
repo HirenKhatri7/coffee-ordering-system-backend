@@ -31,8 +31,20 @@ public class JwtService {
         return claimsResolver.apply(claims);
     }
 
-    public String generateToken(UserDetails userDetails){
-        return generateToken(new HashMap<>(),userDetails);
+    public Long extractUserId(String token){
+        return extractClaims(token,claims -> {
+            Object userId = claims.get("userId");
+            if (userId instanceof Integer) {
+                return ((Integer) userId).longValue();
+            } else if (userId instanceof Long) {
+                return (Long) userId;
+            }
+            return null;
+        });
+    }
+
+    public String generateToken(UserDetails userDetails,Map<String,Object> claims){
+        return generateToken(claims,userDetails);
     }
 
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails){
