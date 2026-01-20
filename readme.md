@@ -67,7 +67,7 @@ Before running the services, you must configure the following environment variab
 
 1.  **Clone the repository**
     ```bash
-    git clone [https://github.com/hirenkhatri7/coffee-ordering-system-backend.git](https://github.com/hirenkhatri7/coffee-ordering-system-backend.git)
+    git clone https://github.com/hirenkhatri7/coffee-ordering-system-backend.git
     cd coffee-ordering-system-backend
     ```
 
